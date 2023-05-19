@@ -7,6 +7,12 @@ namespace WebApiCitasMedicas.Controllers
     [Route("api/medicos")]
     public class MedicosController : ControllerBase
     {
+        private readonly ApplicationDbContext dbContext;
+        public MedicosController(ApplicationDbContext context)
+        { 
+            this.dbContext = context;
+        }
+
         [HttpGet]
         public ActionResult<List<Medico>> Get() {
             return new List<Medico>(){
