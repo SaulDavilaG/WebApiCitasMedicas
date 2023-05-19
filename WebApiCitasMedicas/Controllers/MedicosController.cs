@@ -12,13 +12,12 @@ namespace WebApiCitasMedicas.Controllers
         { 
             this.dbContext = context;
         }
-
         [HttpGet]
         public ActionResult<List<Medico>> Get() {
             return new List<Medico>(){
              new Medico() { Id = 1, Nombre_med = "Saul" },
              new Medico() { Id = 2, Nombre_med = "Luis" },
-        };
-    }
+            };
+        }
     }
 }

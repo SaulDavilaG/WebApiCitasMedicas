@@ -12,7 +12,7 @@ using WebApiCitasMedicas;
 namespace WebApiCitasMedicas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230519050729_Cita")]
+    [Migration("20230519071815_Cita")]
     partial class Cita
     {
         /// <inheritdoc />
@@ -33,17 +33,17 @@ namespace WebApiCitasMedicas.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Fecha_cita")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("MedicoID")
                         .HasColumnType("int");
 
                     b.Property<int>("PacienteID")
                         .HasColumnType("int");
-
-                    b.Property<string>("descripcion")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("fecha_cita")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -108,13 +108,13 @@ namespace WebApiCitasMedicas.Migrations
                     b.HasOne("WebApiCitasMedicas.Entidades.Medico", "Medico")
                         .WithMany()
                         .HasForeignKey("MedicoID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("WebApiCitasMedicas.Entidades.Paciente", "Paciente")
                         .WithMany()
                         .HasForeignKey("PacienteID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Medico");

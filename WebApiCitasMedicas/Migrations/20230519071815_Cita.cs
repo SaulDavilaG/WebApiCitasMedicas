@@ -17,8 +17,8 @@ namespace WebApiCitasMedicas.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    fecha_cita = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Fecha_cita = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MedicoID = table.Column<int>(type: "int", nullable: false),
                     PacienteID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -30,13 +30,13 @@ namespace WebApiCitasMedicas.Migrations
                         column: x => x.MedicoID,
                         principalTable: "Medicos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Citas_Pacientes_PacienteID",
                         column: x => x.PacienteID,
                         principalTable: "Pacientes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
