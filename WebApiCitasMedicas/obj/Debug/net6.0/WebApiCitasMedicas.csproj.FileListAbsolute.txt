@@ -1,10 +1,3 @@
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.csproj.AssemblyReference.cache
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.AssemblyInfoInputs.cache
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.AssemblyInfo.cs
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.csproj.CoreCompileInputs.cache
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\appsettings.json
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\libman.json
@@ -72,6 +65,13 @@ C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bi
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.csproj.AssemblyReference.cache
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.AssemblyInfoInputs.cache
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.AssemblyInfo.cs
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.csproj.CoreCompileInputs.cache
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\staticwebassets\msbuild.WebApiCitasMedicas.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\staticwebassets\msbuild.build.WebApiCitasMedicas.props
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.WebApiCitasMedicas.props
@@ -86,3 +86,8 @@ C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\ob
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.pdb
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.genruntimeconfig.cache
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\ref\WebApiCitasMedicas.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll

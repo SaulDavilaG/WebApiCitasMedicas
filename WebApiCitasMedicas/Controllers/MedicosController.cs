@@ -38,7 +38,7 @@ namespace WebApiCitasMedicas.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Medico>>> GetAll()
         {
-            return await dbContext.Medicos.ToListAsync();
+            return await dbContext.Medicos.Include( x=>x.pacientes).ToListAsync();
         }
 
         [HttpPost]
