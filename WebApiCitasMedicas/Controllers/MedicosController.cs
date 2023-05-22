@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.Entidades;
 
@@ -6,6 +7,7 @@ namespace WebApiCitasMedicas.Controllers
 {
     [ApiController]
     [Route("api/medicos")]
+    //[Authorize]
     public class MedicosController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -26,6 +28,7 @@ namespace WebApiCitasMedicas.Controllers
         }*/
 
         [HttpGet]
+        //[ResponseCache(Duration =10)]
         public async Task<ActionResult<List<Medico>>> GetAll()
         {
             logger.LogInformation("Listado de médicos");

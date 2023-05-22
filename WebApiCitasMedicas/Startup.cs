@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using WebApiCitasMedicas.Filtros;
+using Microsoft.IdentityModel.JsonWebTokens;
 using WebApiCitasMedicas.Middleware;
+using System.Text.Json.Serialization;
 
 namespace WebApiCitasMedicas
 {
@@ -14,10 +18,20 @@ namespace WebApiCitasMedicas
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(opciones =>
+            {
+                opciones.Filters.Add(typeof(ExcepcionFiltro));
+            }).AddJsonOptions(x =>
+            x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
+
+            services.AddTransient<AccionFiltro>();
+
+            services.AddResponseCaching();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen( c=> {
@@ -27,9 +41,8 @@ namespace WebApiCitasMedicas
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            
-            app.UseMiddleware<ResponseHttp>();
 
+            app.UseResponeHttp();
 
             // Configure the HTTP request pipeline.
             if (env.IsDevelopment())
@@ -41,6 +54,8 @@ namespace WebApiCitasMedicas
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseResponseCaching();
 
             app.UseAuthorization();
 

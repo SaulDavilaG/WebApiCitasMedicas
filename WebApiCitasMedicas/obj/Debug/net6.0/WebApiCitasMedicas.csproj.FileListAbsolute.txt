@@ -9,6 +9,10 @@ C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bi
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Azure.Core.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Azure.Identity.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Humanizer.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
@@ -22,6 +26,8 @@ C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bi
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.Logging.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.Options.dll
@@ -86,8 +92,3 @@ C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\ob
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.pdb
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\WebApiCitasMedicas.genruntimeconfig.cache
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\obj\Debug\net6.0\ref\WebApiCitasMedicas.dll
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.Internal.dll
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.Identity.Core.dll
-C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Microsoft.Extensions.Identity.Stores.dll

@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.Entidades;
 
 namespace WebApiCitasMedicas.Controllers
 {
+
     [ApiController]
     [Route("api/pacientes")]
+    //[Authorize]
     public class PacientesController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;

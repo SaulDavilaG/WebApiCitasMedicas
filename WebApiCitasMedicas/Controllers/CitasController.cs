@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApiCitasMedicas.Filtros;
 using WebApiCitasMedicas.Entidades;
 
 namespace WebApiCitasMedicas.Controllers
 {
     [ApiController]
     [Route("api/citas")]
+    //[Authorize]
     public class CitasController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -18,6 +21,7 @@ namespace WebApiCitasMedicas.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(AccionFiltro))]
         public async Task<ActionResult<List<Cita>>> GetAll()
         {
             logger.LogInformation("Listado de Citas");

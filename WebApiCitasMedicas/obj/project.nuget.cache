@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "33rwx7CXpFemJUBtxaN5LgI4R2zrjjJaDutMXZwxHs+Rg/dvXkw7ieVjzEHOU3Zkh1RayNqsrXUqkqrvuYLxXw==",
+  "dgSpecHash": "JyD/mNsmeOWdhdDjbVTtzVaQpsBOtVvHrmfEMBYcwC7CzV5gI6oDB4NGk8uJYLknnpflfAFgCSKPXk0AvjAiIw==",
   "success": true,
   "projectFilePath": "C:\\Users\\sauli\\Documents\\Saul\\Proyectos\\WebApiCitasMedicas\\WebApiCitasMedicas\\WebApiCitasMedicas.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sauli\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\sauli\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\sauli\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\sauli\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.16\\microsoft.aspnetcore.authentication.jwtbearer.6.0.16.nupkg.sha512",
     "C:\\Users\\sauli\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.16\\microsoft.aspnetcore.cryptography.internal.6.0.16.nupkg.sha512",
     "C:\\Users\\sauli\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.16\\microsoft.aspnetcore.cryptography.keyderivation.6.0.16.nupkg.sha512",
     "C:\\Users\\sauli\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.16\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.16.nupkg.sha512",
