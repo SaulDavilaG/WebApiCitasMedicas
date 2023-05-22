@@ -9,32 +9,36 @@ namespace WebApiCitasMedicas.Controllers
     public class CitasController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly ILogger<CitasController> logger;
 
-        public CitasController(ApplicationDbContext dbContext)
+        public CitasController(ApplicationDbContext dbContext, ILogger<CitasController> logger)
         {
             this.dbContext = dbContext;
+            this.logger = logger;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Cita>>> GetAll()
         {
+            logger.LogInformation("Listado de Citas");
             return await dbContext.Citas.Include(x => x.Paciente).ToListAsync();
         }
 
         [HttpGet("id")]
         public async Task<ActionResult<Cita>> GetByID(int id)
         {
+            logger.LogInformation("Busqueda de cita por id exitosa");
             return await dbContext.Citas.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        [HttpGet("Nombre")]
+        [HttpGet("{Nombre}")]
         public async Task<ActionResult<Cita>> GetByName(string nombre)
         {
             if (nombre == null)
             {
                 return NotFound();
             }
-
+            logger.LogInformation("Busqueda de cita por nombre exitosa");
             return await dbContext.Citas.FirstOrDefaultAsync(x => x.Paciente.nombre == nombre);
         }
 
@@ -62,6 +66,7 @@ namespace WebApiCitasMedicas.Controllers
 
             dbContext.Add(cita);
             await dbContext.SaveChangesAsync();
+            logger.LogInformation("Registro de cita exitoso");
             return Ok();
         }
 
@@ -87,6 +92,7 @@ namespace WebApiCitasMedicas.Controllers
             }
 
             dbContext.Update(cita);
+            logger.LogInformation("Actualización de registro de cita exitoso");
             await dbContext.SaveChangesAsync();
             return Ok();
         }
@@ -104,6 +110,7 @@ namespace WebApiCitasMedicas.Controllers
             {
                 Id = id
             });
+            logger.LogInformation("Eliminación de cita exitoso");
             await dbContext.SaveChangesAsync();
             return Ok();
         }

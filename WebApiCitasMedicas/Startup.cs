@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebApiCitasMedicas.Middleware;
 
 namespace WebApiCitasMedicas
 {
@@ -24,8 +25,12 @@ namespace WebApiCitasMedicas
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            
+            app.UseMiddleware<ResponseHttp>();
+
+
             // Configure the HTTP request pipeline.
             if (env.IsDevelopment())
             {

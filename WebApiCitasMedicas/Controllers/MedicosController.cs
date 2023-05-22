@@ -9,9 +9,12 @@ namespace WebApiCitasMedicas.Controllers
     public class MedicosController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
-        public MedicosController(ApplicationDbContext context)
+        private readonly ILogger<MedicosController> logger;
+
+        public MedicosController(ApplicationDbContext context, ILogger<MedicosController> logger)
         {
             this.dbContext = context;
+            this.logger = logger;
         }
         /*
         [HttpGet]
@@ -21,6 +24,13 @@ namespace WebApiCitasMedicas.Controllers
              new Medico() { Id = 2, Nombre_med = "Luis" },
             };
         }*/
+
+        [HttpGet]
+        public async Task<ActionResult<List<Medico>>> GetAll()
+        {
+            logger.LogInformation("Listado de médicos");
+            return await dbContext.Medicos.Include(x => x.pacientes).ToListAsync();
+        }
 
         [HttpGet("{nombre}")]
         public async Task<ActionResult<Medico>> Get(string nombre)
@@ -32,19 +42,15 @@ namespace WebApiCitasMedicas.Controllers
                 return NotFound();
             }
 
+            logger.LogInformation("Busqueda de medico por nombre exitosa");
             return medico;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<List<Medico>>> GetAll()
-        {
-            return await dbContext.Medicos.Include( x=>x.pacientes).ToListAsync();
         }
 
         [HttpPost]
         public async Task<ActionResult> Post(Medico medico)
         {
             dbContext.Add(medico);
+            logger.LogInformation("Registro de médico exitoso");
             await dbContext.SaveChangesAsync();
             return Ok();
         }
@@ -58,6 +64,8 @@ namespace WebApiCitasMedicas.Controllers
             }
 
             dbContext.Update(medico);
+
+            logger.LogInformation("Actualización de registro exitoso");
             await dbContext.SaveChangesAsync();
             return Ok();
         }
@@ -75,6 +83,8 @@ namespace WebApiCitasMedicas.Controllers
             {
                 Id = id
             });
+
+            logger.LogInformation("Eliminación de médico exitoso");
             await dbContext.SaveChangesAsync();
             return Ok();
         }

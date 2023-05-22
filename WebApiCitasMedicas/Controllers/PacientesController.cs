@@ -9,21 +9,25 @@ namespace WebApiCitasMedicas.Controllers
     public class PacientesController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly ILogger<PacientesController> logger;
 
-        public PacientesController(ApplicationDbContext dbContext)
+        public PacientesController(ApplicationDbContext dbContext, ILogger<PacientesController> logger)
         {
             this.dbContext = dbContext;
+            this.logger = logger;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Paciente>>> GetAll()
         {
+            logger.LogInformation("Listado de pacientes");
             return await dbContext.Pacientes.ToListAsync();
         }
 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Paciente>> GetByID(int id)
-        { 
+        {
+            logger.LogInformation("Busqueda de paciente por id exitosa");
             return await dbContext.Pacientes.FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -38,6 +42,7 @@ namespace WebApiCitasMedicas.Controllers
             }
 
             dbContext.Add(paciente);
+            logger.LogInformation("Registro de paciente exitoso");
             await dbContext.SaveChangesAsync();
             return Ok();
         }
@@ -58,6 +63,7 @@ namespace WebApiCitasMedicas.Controllers
             }
 
             dbContext.Update(paciente);
+            logger.LogInformation("Actualización de registro de paciente exitoso");
             await dbContext.SaveChangesAsync();
             return Ok();
         }
@@ -75,6 +81,7 @@ namespace WebApiCitasMedicas.Controllers
             {
                 Id = id
             });
+            logger.LogInformation("Eliminación de paciente exitoso");
             await dbContext.SaveChangesAsync();
             return Ok();
         }
