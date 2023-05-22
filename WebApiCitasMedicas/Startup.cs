@@ -32,7 +32,7 @@ namespace WebApiCitasMedicas
 
             services.AddResponseCaching();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-
+            
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen( c=> {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "ApiCitasMedicas", Version = "v1" });

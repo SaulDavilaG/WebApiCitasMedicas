@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.Filtros;
 using WebApiCitasMedicas.Entidades;
+using WebApiCitasMedicas.DTOs;
 
 namespace WebApiCitasMedicas.Controllers
 {
@@ -13,11 +14,13 @@ namespace WebApiCitasMedicas.Controllers
     {
         private readonly ApplicationDbContext dbContext;
         private readonly ILogger<CitasController> logger;
+        private readonly IMapper mapper;
 
-        public CitasController(ApplicationDbContext dbContext, ILogger<CitasController> logger)
+        public CitasController(ApplicationDbContext dbContext, IMapper mapper , ILogger<CitasController> logger)
         {
             this.dbContext = dbContext;
             this.logger = logger;
+            this.mapper = mapper;
         }
 
         [HttpGet]
@@ -25,33 +28,36 @@ namespace WebApiCitasMedicas.Controllers
         public async Task<ActionResult<List<Cita>>> GetAll()
         {
             logger.LogInformation("Listado de Citas");
-            return await dbContext.Citas.Include(x => x.Paciente).ToListAsync();
+            var Citas = await dbContext.Citas.ToListAsync();
+            return Ok(Citas.Select(Cita=> mapper.Map<CitaDTO>(Cita)));
         }
 
-        [HttpGet("id")]
-        public async Task<ActionResult<Cita>> GetByID(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<CitaDTO>> GetByID(int id)
         {
+            var cita = await dbContext.Citas.FirstOrDefaultAsync(x => x.Id == id);
             logger.LogInformation("Busqueda de cita por id exitosa");
-            return await dbContext.Citas.FirstOrDefaultAsync(x => x.Id == id);
+            return mapper.Map<CitaDTO>(cita); 
         }
 
-        [HttpGet("{Nombre}")]
-        public async Task<ActionResult<Cita>> GetByName(string nombre)
+        [HttpGet("Nombre")] //Nadamás retorna la primera cita
+        public async Task<ActionResult<List<Cita>>> GetByName(string nombre)
         {
             if (nombre == null)
             {
                 return NotFound();
             }
-            logger.LogInformation("Busqueda de cita por nombre exitosa");
-            return await dbContext.Citas.FirstOrDefaultAsync(x => x.Paciente.nombre == nombre);
+            var cita = await dbContext.Citas.Where(x => x.Paciente.nombre.Contains(nombre)).ToListAsync();
+            logger.LogInformation("Busqueda de cita por nombre del paciente exitosa");
+            return Ok(cita.Select(cita=> mapper.Map<CitaDTO>(cita)));
         }
-
+        
         [HttpPost]
-        public async Task<ActionResult> Post(Cita cita)
+        public async Task<ActionResult> Post(CitaDTO citaDto)
         {
-            var existeMedico = await dbContext.Medicos.AnyAsync( x => x.Id == cita.MedicoID);
-            var existePaciente = await dbContext.Pacientes.AnyAsync( x => x.Id == cita.PacienteID);
-            var mismoMedico = await dbContext.Pacientes.AnyAsync( x => x.MedicoID == cita.MedicoID && x.Id == cita.PacienteID );
+            var existeMedico = await dbContext.Medicos.AnyAsync( x => x.Id == citaDto.MedicoID);
+            var existePaciente = await dbContext.Pacientes.AnyAsync( x => x.Id == citaDto.PacienteID);
+            var mismoMedico = await dbContext.Pacientes.AnyAsync( x => x.MedicoID == citaDto.MedicoID && x.Id == citaDto.PacienteID );
 
             if (!existeMedico)
             {
@@ -68,17 +74,21 @@ namespace WebApiCitasMedicas.Controllers
                 return BadRequest("El paciente seleccionado no tiene relacion con el medico seleccionado");
             }
 
+            var cita = mapper.Map<Cita>(citaDto);
             dbContext.Add(cita);
             await dbContext.SaveChangesAsync();
             logger.LogInformation("Registro de cita exitoso");
-            return Ok();
+
+            var citas = await dbContext.Citas.ToListAsync();
+            return Ok(citas.Select(cita => mapper.Map<CitaDTO>(cita)));
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(Cita cita, int id)
+        public async Task<ActionResult> Put(CitaDTOGet citaDtoGet, int id)
         {
-            var existeMedico = await dbContext.Medicos.AnyAsync(x => x.Id == cita.MedicoID);
-            var existePaciente = await dbContext.Pacientes.AnyAsync(x => x.Id == cita.PacienteID);
+            var existeMedico = await dbContext.Medicos.AnyAsync(x => x.Id == citaDtoGet.MedicoID);
+            var existePaciente = await dbContext.Pacientes.AnyAsync(x => x.Id == citaDtoGet.PacienteID);
+            var mismoMedico = await dbContext.Pacientes.AnyAsync(x => x.MedicoID == citaDtoGet.MedicoID && x.Id == citaDtoGet.PacienteID);
 
             if (!existeMedico)
             {
@@ -90,12 +100,20 @@ namespace WebApiCitasMedicas.Controllers
                 return BadRequest("No existe el paciente");
             }
 
-            if (cita.Id != id)
+            if (citaDtoGet.Id != id)
             {
                 return BadRequest("El ID de la cita no coincide en la URL ");
             }
 
+            if (!mismoMedico)
+            {
+                return BadRequest("El paciente seleccionado no tiene relacion con el medico seleccionado");
+            }
+
+            var cita = mapper.Map<Cita>(citaDtoGet);
+
             dbContext.Update(cita);
+
             logger.LogInformation("Actualización de registro de cita exitoso");
             await dbContext.SaveChangesAsync();
             return Ok();

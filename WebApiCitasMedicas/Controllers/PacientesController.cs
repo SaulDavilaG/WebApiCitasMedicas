@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.Entidades;
+using WebApiCitasMedicas.DTOs;
 
 namespace WebApiCitasMedicas.Controllers
 {
-
     [ApiController]
     [Route("api/pacientes")]
     //[Authorize]
@@ -13,59 +13,76 @@ namespace WebApiCitasMedicas.Controllers
     {
         private readonly ApplicationDbContext dbContext;
         private readonly ILogger<PacientesController> logger;
+        private readonly IMapper mapper;
 
-        public PacientesController(ApplicationDbContext dbContext, ILogger<PacientesController> logger)
+        public PacientesController(ApplicationDbContext dbContext, IMapper mapper, ILogger<PacientesController> logger)
         {
             this.dbContext = dbContext;
             this.logger = logger;
+            this.mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Paciente>>> GetAll()
         {
             logger.LogInformation("Listado de pacientes");
-            return await dbContext.Pacientes.ToListAsync();
+            var pacientes = await dbContext.Pacientes.ToListAsync();
+            return Ok(pacientes.Select(paciente => mapper.Map<PacienteDTO>(paciente)));
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Paciente>> GetByID(int id)
+        public async Task<ActionResult<PacienteDTO>> GetByID(int id)
         {
+            var paciente = await dbContext.Pacientes.FirstOrDefaultAsync(x => x.Id == id);
             logger.LogInformation("Busqueda de paciente por id exitosa");
-            return await dbContext.Pacientes.FirstOrDefaultAsync(x => x.Id == id);
+            return mapper.Map<PacienteDTO>(paciente);
+         
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Paciente paciente)
+        public async Task<ActionResult> Post(PacienteDTO pacienteDto)
         {
-            var existeMedico = await dbContext.Medicos.AnyAsync(x => x.Id == paciente.MedicoID);
+            var existeMedico = await dbContext.Medicos.AnyAsync(x => x.Id == pacienteDto.MedicoID);
 
             if (!existeMedico)
             {
                 return BadRequest("No existe el medico");
             }
 
+            var paciente=mapper.Map<Paciente>(pacienteDto); 
             dbContext.Add(paciente);
             logger.LogInformation("Registro de paciente exitoso");
             await dbContext.SaveChangesAsync();
-            return Ok();
+
+            var pacientes = await dbContext.Pacientes.ToListAsync();
+            return Ok(pacientes.Select(paciente => mapper.Map<PacienteDTO>(paciente)));
+
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(Paciente paciente, int id)
+        public async Task<ActionResult> Put(PacienteDTOGet pacienteDtoGet, int id)
         {
-            var existeMedico = await dbContext.Medicos.AnyAsync(x => x.Id == paciente.MedicoID);
+            var existeMedico = await dbContext.Medicos.AnyAsync(x => x.Id == pacienteDtoGet.MedicoID);
+            var mismoMedico = await dbContext.Pacientes.AnyAsync(x => x.MedicoID == pacienteDtoGet.MedicoID && x.Id == pacienteDtoGet.Id);
 
             if (!existeMedico)
             {
                 return BadRequest("No existe el Medico");
             }
 
-            if (paciente.Id != id)
+            if (pacienteDtoGet.Id != id)
             {
-                return BadRequest("El ID del medico no coincide en la URL ");
+                return BadRequest("El ID del paciente no coincide en la URL ");
+            }
+            if (!mismoMedico)
+            {
+                return BadRequest("El paciente seleccionado no tiene relacion con el medico seleccionado");
             }
 
+            var paciente = mapper.Map<Paciente>(pacienteDtoGet);
+
             dbContext.Update(paciente);
+
             logger.LogInformation("Actualización de registro de paciente exitoso");
             await dbContext.SaveChangesAsync();
             return Ok();
@@ -88,6 +105,5 @@ namespace WebApiCitasMedicas.Controllers
             await dbContext.SaveChangesAsync();
             return Ok();
         }
-
     }
 }

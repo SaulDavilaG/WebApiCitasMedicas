@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApiCitasMedicas.DTOs;
 using WebApiCitasMedicas.Entidades;
+using WebApiCitasMedicas.Migrations;
 
 namespace WebApiCitasMedicas.Controllers
 {
@@ -12,11 +15,13 @@ namespace WebApiCitasMedicas.Controllers
     {
         private readonly ApplicationDbContext dbContext;
         private readonly ILogger<MedicosController> logger;
+        private readonly IMapper mapper;
 
-        public MedicosController(ApplicationDbContext context, ILogger<MedicosController> logger)
+        public MedicosController(ApplicationDbContext context, ILogger<MedicosController> logger, IMapper mapper)
         {
             this.dbContext = context;
             this.logger = logger;
+            this.mapper = mapper;
         }
         /*
         [HttpGet]
@@ -32,11 +37,13 @@ namespace WebApiCitasMedicas.Controllers
         public async Task<ActionResult<List<Medico>>> GetAll()
         {
             logger.LogInformation("Listado de médicos");
-            return await dbContext.Medicos.Include(x => x.pacientes).ToListAsync();
+
+            var medicos = await dbContext.Medicos.ToListAsync();
+            return Ok(medicos.Select(medico => mapper.Map<MedicoDTO>(medico)));
         }
 
         [HttpGet("{nombre}")]
-        public async Task<ActionResult<Medico>> Get(string nombre)
+        public async Task<ActionResult<MedicoDTO>> Get(string nombre)
         {
             var medico = await dbContext.Medicos.FirstOrDefaultAsync(x => x.Nombre_med.Equals(nombre));
 
@@ -46,26 +53,32 @@ namespace WebApiCitasMedicas.Controllers
             }
 
             logger.LogInformation("Busqueda de medico por nombre exitosa");
-            return medico;
+            return mapper.Map<MedicoDTO>(medico);
         }
 
+
         [HttpPost]
-        public async Task<ActionResult> Post(Medico medico)
+        public async Task<ActionResult> Post(MedicoDTO medicoDto) 
         {
+            var medico = mapper.Map<Medico>(medicoDto);
             dbContext.Add(medico);
             logger.LogInformation("Registro de médico exitoso");
             await dbContext.SaveChangesAsync();
-            return Ok();
+
+            var medicos = await dbContext.Medicos.ToListAsync();
+            return Ok(medicos.Select(medico=>mapper.Map<MedicoDTO>(medico)));       
         }
 
+
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(Medico medico, int id)
+        public async Task<ActionResult> Put(MedicoDTOGet medicoDtoGet, int id)
         {
-            if (medico.Id != id)
+
+            if (medicoDtoGet.Id != id)
             {
                 return BadRequest("El ID del medico no coincide con el establecido en la url");
             }
-
+            var medico = mapper.Map<Medico>(medicoDtoGet);
             dbContext.Update(medico);
 
             logger.LogInformation("Actualización de registro exitoso");
@@ -73,6 +86,7 @@ namespace WebApiCitasMedicas.Controllers
             return Ok();
         }
 
+ //pues no se osea tu dices de q pueda cambiar su cedula, pero esa madre no cambia no?
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {

@@ -6,6 +6,8 @@ C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bi
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\WebApiCitasMedicas.runtimeconfig.json
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\WebApiCitasMedicas.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\WebApiCitasMedicas.pdb
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Azure.Core.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Azure.Identity.dll
 C:\Users\sauli\Documents\Saul\Proyectos\WebApiCitasMedicas\WebApiCitasMedicas\bin\Debug\net6.0\Humanizer.dll

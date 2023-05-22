@@ -1,27 +1,25 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApiCitasMedicas.Entidades
+namespace WebApiCitasMedicas.DTOs
 {
-    public class Paciente : IValidatableObject
+    public class PacienteDTO : IValidatableObject
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public string nombre { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public float peso { get; set;}
+        public float peso { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public float altura { get; set;}
+        public float altura { get; set; }
 
-        public string hist_medico { get; set;}
-
-        [Required(ErrorMessage = "El campo {0} es requerido")]
-        public string sexo { get; set;}
+        public string hist_medico { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")]
-        public int MedicoID { get; set; }
+        public string sexo { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        public int MedicoID { get; set; } 
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
@@ -35,7 +33,7 @@ namespace WebApiCitasMedicas.Entidades
                 yield return new ValidationResult("El atributo altura debe ser mayor que 0m y menor que 2.5m", new String[] { nameof(altura) });
             }
 
-            if (sexo == "Masculino" || sexo == "Femenino"){}
+            if (sexo == "Masculino" || sexo == "Femenino") { }
             else
             {
                 yield return new ValidationResult("El atributo sexo debe ser femenino o masculino", new String[] { nameof(sexo) });
