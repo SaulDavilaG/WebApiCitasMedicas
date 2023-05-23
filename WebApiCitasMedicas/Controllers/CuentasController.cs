@@ -59,7 +59,6 @@ namespace WebApiCitasMedicas.Controllers
 
         [HttpGet("RenovarToken")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
         public async Task<ActionResult<RespuestaAutenticacion>> Renovar()
         {
             var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
@@ -87,7 +86,7 @@ namespace WebApiCitasMedicas.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["keyjwt"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expiration = DateTime.UtcNow.AddMinutes(100);
+            var expiration = DateTime.UtcNow.AddMinutes(1);
 
             var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims,
                 expires: expiration, signingCredentials: creds);

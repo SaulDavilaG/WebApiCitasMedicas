@@ -97,8 +97,7 @@ namespace WebApiCitasMedicas
                 opciones.AddDefaultPolicy(builder =>
                 {
                     builder.WithOrigins("https://apirequest.io").AllowAnyMethod().AllowAnyHeader();
-                    //builder.WithOrigins("https://google.com").AllowAnyMethod().AllowAnyHeader();
-                    //
+                    //colocar https://localhost:7122/api/pacientes, ya que es [AllowAnonymous]
                 });
             });
         }

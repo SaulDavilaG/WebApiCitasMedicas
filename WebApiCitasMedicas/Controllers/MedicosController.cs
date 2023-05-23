@@ -42,6 +42,8 @@ namespace WebApiCitasMedicas.Controllers
             logger.LogInformation("Listado de médicos");
 
             var medicos = await dbContext.Medicos.ToListAsync();
+            //var medicoss = dbContext.Medicos.ToListAsync();
+            //logger.LogInformation(medicoss.ToString());
             return Ok(medicos.Select(medico => mapper.Map<MedicoDTO>(medico)));
         }
 
@@ -49,6 +51,7 @@ namespace WebApiCitasMedicas.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
         public async Task<ActionResult<MedicoDTO>> Get(string nombre)
         {
+
             var medico = await dbContext.Medicos.FirstOrDefaultAsync(x => x.Nombre_med.Equals(nombre));
 
             if (nombre == null) 
@@ -69,7 +72,13 @@ namespace WebApiCitasMedicas.Controllers
             var email = emailClaim.Value;
             var usuario = await userManager.FindByEmailAsync(email);
             var usuarioId = usuario.Id;
-            logger.LogInformation(usuario.Id);
+
+            var MedicoYaRegistrado = await dbContext.Medicos.AnyAsync(x => x.UsuarioId == usuarioId);
+
+            if (MedicoYaRegistrado)
+            {
+                return BadRequest("Ya has creado un perfil con esta cuenta");
+            }
 
             var medico = mapper.Map<Medico>(medicoDto);
             medico.UsuarioId = usuarioId;
@@ -84,16 +93,17 @@ namespace WebApiCitasMedicas.Controllers
         }
 
 
-        [HttpPut("{id:int}")]
+        [HttpPut("ModificarInfo")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
-        public async Task<ActionResult> Put(MedicoDTOGet medicoDtoGet, int id)
+        public async Task<ActionResult> Put(MedicoDTOGet medicoDtoGet)
         {
-
-            if (medicoDtoGet.Id != id)
-            {
-                return BadRequest("El ID del medico no coincide con el establecido en la url");
-            }
+            var emailClaim = HttpContext.User.Claims.Where(claims => claims.Type == "email").FirstOrDefault();
+            var email = emailClaim.Value;
+            var usuario = await userManager.FindByEmailAsync(email);
+            var usuarioId = usuario.Id;
             var medico = mapper.Map<Medico>(medicoDtoGet);
+            medico.UsuarioId = usuarioId;
+
             dbContext.Update(medico);
 
             logger.LogInformation("Actualización de registro exitoso");
