@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiCitasMedicas;
 
@@ -11,9 +12,11 @@ using WebApiCitasMedicas;
 namespace WebApiCitasMedicas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230522230711_SistemaUsuarios")]
+    partial class SistemaUsuarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,12 +269,7 @@ namespace WebApiCitasMedicas.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Medicos");
                 });
@@ -286,9 +284,6 @@ namespace WebApiCitasMedicas.Migrations
 
                     b.Property<int>("MedicoID")
                         .HasColumnType("int");
-
-                    b.Property<string>("UsuarioId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("altura")
                         .HasColumnType("real");
@@ -310,8 +305,6 @@ namespace WebApiCitasMedicas.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MedicoID");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Pacientes");
                 });
@@ -386,15 +379,6 @@ namespace WebApiCitasMedicas.Migrations
                     b.Navigation("Paciente");
                 });
 
-            modelBuilder.Entity("WebApiCitasMedicas.Entidades.Medico", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("WebApiCitasMedicas.Entidades.Paciente", b =>
                 {
                     b.HasOne("WebApiCitasMedicas.Entidades.Medico", null)
@@ -402,12 +386,6 @@ namespace WebApiCitasMedicas.Migrations
                         .HasForeignKey("MedicoID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("WebApiCitasMedicas.Entidades.Medico", b =>

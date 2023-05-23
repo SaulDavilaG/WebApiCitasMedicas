@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApiCitasMedicas.Entidades
@@ -20,5 +21,6 @@ namespace WebApiCitasMedicas.Entidades
         public int PacienteID{ get; set;}
         public Medico Medico { get; set; }
         public Paciente Paciente { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApiCitasMedicas.Entidades
 {
@@ -22,6 +23,10 @@ namespace WebApiCitasMedicas.Entidades
 
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public int MedicoID { get; set; }
+
+        public string UsuarioId { get; set; }
+
+        public IdentityUser Usuario { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

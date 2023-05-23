@@ -4,6 +4,12 @@ using WebApiCitasMedicas.Filtros;
 using Microsoft.IdentityModel.JsonWebTokens;
 using WebApiCitasMedicas.Middleware;
 using System.Text.Json.Serialization;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace WebApiCitasMedicas
 {
@@ -11,6 +17,7 @@ namespace WebApiCitasMedicas
     {
         public Startup(IConfiguration configuration)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             Configuration = configuration;
         }
 
@@ -31,11 +38,68 @@ namespace WebApiCitasMedicas
             services.AddTransient<AccionFiltro>();
 
             services.AddResponseCaching();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-            
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer
+                (opciones => opciones.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(Configuration["keyjwt"])),
+                    ClockSkew = TimeSpan.Zero
+                });
+
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen( c=> {
+            services.AddSwaggerGen(c =>
+            {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "ApiCitasMedicas", Version = "v1" });
+                
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference= new OpenApiReference
+                                {
+                                Type= ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new String[]{}
+                    }
+                });
+            });
+
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthorization(opciones =>
+            {
+                opciones.AddPolicy("EsAdmin", politica => politica.RequireClaim("esAdmin"));
+                opciones.AddPolicy("EsMedico", politica => politica.RequireClaim("esMedico"));
+                opciones.AddPolicy("EsPaciente", politica => politica.RequireClaim("esPaciente"));
+            });
+
+            services.AddCors(opciones =>
+            {
+                opciones.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("https://apirequest.io").AllowAnyMethod().AllowAnyHeader();
+                    //builder.WithOrigins("https://google.com").AllowAnyMethod().AllowAnyHeader();
+                    //
+                });
             });
         }
 
@@ -55,6 +119,8 @@ namespace WebApiCitasMedicas
 
             app.UseRouting();
 
+            app.UseCors();
+
             app.UseResponseCaching();
 
             app.UseAuthorization();
@@ -63,7 +129,6 @@ namespace WebApiCitasMedicas
             {
                 endpoints.MapControllers();
             });
-
         }
     }
 }

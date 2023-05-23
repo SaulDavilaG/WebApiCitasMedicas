@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.Filtros;
@@ -8,23 +11,26 @@ using WebApiCitasMedicas.DTOs;
 namespace WebApiCitasMedicas.Controllers
 {
     [ApiController]
+    [ResponseCache(Duration = 2)]
     [Route("api/citas")]
-    //[Authorize]
     public class CitasController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
         private readonly ILogger<CitasController> logger;
         private readonly IMapper mapper;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public CitasController(ApplicationDbContext dbContext, IMapper mapper , ILogger<CitasController> logger)
+        public CitasController(ApplicationDbContext dbContext, IMapper mapper , ILogger<CitasController> logger, UserManager<IdentityUser> userManager)
         {
             this.dbContext = dbContext;
             this.logger = logger;
             this.mapper = mapper;
+            this.userManager = userManager;
         }
 
         [HttpGet]
         [ServiceFilter(typeof(AccionFiltro))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
         public async Task<ActionResult<List<Cita>>> GetAll()
         {
             logger.LogInformation("Listado de Citas");
@@ -33,6 +39,7 @@ namespace WebApiCitasMedicas.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsPaciente")]
         public async Task<ActionResult<CitaDTO>> GetByID(int id)
         {
             var cita = await dbContext.Citas.FirstOrDefaultAsync(x => x.Id == id);
@@ -41,6 +48,7 @@ namespace WebApiCitasMedicas.Controllers
         }
 
         [HttpGet("Nombre")] //Nadamás retorna la primera cita
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsPaciente")]
         public async Task<ActionResult<List<Cita>>> GetByName(string nombre)
         {
             if (nombre == null)
@@ -53,6 +61,7 @@ namespace WebApiCitasMedicas.Controllers
         }
         
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
         public async Task<ActionResult> Post(CitaDTO citaDto)
         {
             var existeMedico = await dbContext.Medicos.AnyAsync( x => x.Id == citaDto.MedicoID);
@@ -84,6 +93,7 @@ namespace WebApiCitasMedicas.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
         public async Task<ActionResult> Put(CitaDTOGet citaDtoGet, int id)
         {
             var existeMedico = await dbContext.Medicos.AnyAsync(x => x.Id == citaDtoGet.MedicoID);
@@ -120,6 +130,7 @@ namespace WebApiCitasMedicas.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
         public async Task<ActionResult> Delete(int id)
         {
             var exists = await dbContext.Citas.AnyAsync(x => x.Id == id);
