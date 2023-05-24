@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.DTOs;
 using WebApiCitasMedicas.Entidades;
+using WebApiCitasMedicas.Filtros;
 
 namespace WebApiCitasMedicas.Controllers
 {
@@ -45,6 +46,29 @@ namespace WebApiCitasMedicas.Controllers
             //var medicoss = dbContext.Medicos.ToListAsync();
             //logger.LogInformation(medicoss.ToString());
             return Ok(medicos.Select(medico => mapper.Map<MedicoDTO>(medico)));
+        }
+
+        [HttpGet("MisPacientes")]
+        [ServiceFilter(typeof(AccionFiltro))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
+        public async Task<ActionResult<List<Paciente>>> GetAllMy()
+        {
+            var emailClaim = HttpContext.User.Claims.Where(claims => claims.Type == "email").FirstOrDefault();
+            var email = emailClaim.Value;
+            var usuario = await userManager.FindByEmailAsync(email);
+            var usuarioId = usuario.Id;
+
+            var medico = await dbContext.Medicos.FirstOrDefaultAsync(x => x.UsuarioId == usuarioId);
+            var Pacientes = await dbContext.Pacientes.Where(x => x.MedicoID == medico.Id).ToListAsync();
+            var Paciente = await dbContext.Pacientes.AnyAsync(x => x.MedicoID == medico.Id);
+
+            if (!Paciente)
+            {
+                return BadRequest("No tiene pacientes registrados");
+            }
+
+            logger.LogInformation("Listado de Mis Pacientes");
+            return Ok(Pacientes.Select(Paciente => mapper.Map<PacienteDTO>(Paciente)));
         }
 
         [HttpGet("{nombre}")]

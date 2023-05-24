@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.Entidades;
 using WebApiCitasMedicas.DTOs;
 using Microsoft.Extensions.Logging;
+using WebApiCitasMedicas.Filtros;
 
 namespace WebApiCitasMedicas.Controllers
 {
@@ -36,6 +37,28 @@ namespace WebApiCitasMedicas.Controllers
             logger.LogInformation("Listado de pacientes");
             var pacientes = await dbContext.Pacientes.ToListAsync();
             return Ok(pacientes.Select(paciente => mapper.Map<PacienteDTO>(paciente)));
+        }
+
+        [HttpGet("MisCitas")]
+        [ServiceFilter(typeof(AccionFiltro))]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsPaciente")]
+        public async Task<ActionResult<List<Cita>>> GetAllMy()
+        {
+            var emailClaim = HttpContext.User.Claims.Where(claims => claims.Type == "email").FirstOrDefault();
+            var email = emailClaim.Value;
+            var usuario = await userManager.FindByEmailAsync(email);
+            var usuarioId = usuario.Id;
+
+            var paciente = await dbContext.Pacientes.FirstOrDefaultAsync(x => x.UsuarioId == usuarioId);
+            var Citas = await dbContext.Citas.Where(x => x.PacienteID == paciente.Id).ToListAsync();
+            var cita = await dbContext.Citas.AnyAsync(x => x.PacienteID == paciente.Id);
+
+            if (!cita)
+            {
+                return BadRequest("No tiene citas registradas");
+            }
+            logger.LogInformation("Listado de Mis Citas");
+            return Ok(Citas.Select(Cita => mapper.Map<CitaDTO>(Cita)));
         }
 
         [HttpGet("MiInfo")]
@@ -73,16 +96,31 @@ namespace WebApiCitasMedicas.Controllers
                 return BadRequest("No existe el medico");
             }
 
-            var paciente=mapper.Map<Paciente>(pacienteDto);
+            var medComparar = await dbContext.Pacientes.Where(x => x.MedicoID == pacienteDto.MedicoID).ToListAsync();
+
+            var cont = 0;
+            foreach (var item in medComparar)
+            {
+                cont++;
+            }
+
+            Console.WriteLine("Numero pacientes "+ cont);
+
+            if (cont > 99)
+            {
+                return BadRequest("Limite de numero de pacientes alcanzado");
+            }
+
+            var paciente =mapper.Map<Paciente>(pacienteDto);
             paciente.UsuarioId = usuarioId;
 
-            dbContext.Add(paciente);
+            //dbContext.Add(paciente);
 
             logger.LogInformation("Registro de paciente exitoso");
             await dbContext.SaveChangesAsync();
 
-            var pacientes = await dbContext.Pacientes.ToListAsync();
-            return Ok(pacientes.Select(paciente => mapper.Map<PacienteDTO>(paciente)));
+            var pacientes = await dbContext.Pacientes.AnyAsync(x => x.UsuarioId == usuarioId);
+            return Ok(pacientes);
         }
 
         [HttpPut("ModificarInfo")]

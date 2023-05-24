@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.Filtros;
 using WebApiCitasMedicas.Entidades;
 using WebApiCitasMedicas.DTOs;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApiCitasMedicas.Controllers
 {
@@ -33,14 +35,23 @@ namespace WebApiCitasMedicas.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
         public async Task<ActionResult<List<Cita>>> GetAll()
         {
+            //DateTime aDate = DateTime.Now;
+            //string fechaString = aDate.ToString("MM/dd/yyyy");
+
             var emailClaim = HttpContext.User.Claims.Where(claims => claims.Type == "email").FirstOrDefault();
             var email = emailClaim.Value;
             var usuario = await userManager.FindByEmailAsync(email);
             var usuarioId = usuario.Id;
 
-            var medico = await dbContext.Medicos.FirstOrDefaultAsync(x=>x.UsuarioId == usuarioId);
-            logger.LogInformation("Listado de Citas");
+            var medico = await dbContext.Medicos.FirstOrDefaultAsync(x => x.UsuarioId == usuarioId);
             var Citas = await dbContext.Citas.Where(x => x.MedicoID == medico.Id).ToListAsync();
+
+            foreach (var item in Citas)
+            {
+                Console.WriteLine(item.Fecha_cita.Date);
+            }
+
+            logger.LogInformation("Listado de Citas");
 
             return Ok(Citas.Select(Cita => mapper.Map<CitaDTO>(Cita)));
         }
@@ -59,9 +70,9 @@ namespace WebApiCitasMedicas.Controllers
             logger.LogInformation("Busqueda de cita por id exitosa");
             return mapper.Map<CitaDTO>(cita); 
         }
-        /* Este método es más general, y permite buscar citas de cualquier usuario solo con su nombre
+
         [HttpGet("Nombre")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsPaciente")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
         public async Task<ActionResult<List<Cita>>> GetByName(string nombre)
         {
             if (nombre == null)
@@ -72,7 +83,15 @@ namespace WebApiCitasMedicas.Controllers
             logger.LogInformation("Busqueda de cita por nombre del paciente exitosa");
             return Ok(cita.Select(cita=> mapper.Map<CitaDTO>(cita)));
         }
-        */
+
+        [HttpGet("CitasPorDia")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
+        public async Task<ActionResult<List<Cita>>> Put(string fecha)
+        {
+            DateTime date = DateTime.Parse(fecha);
+            var citas = await dbContext.Citas.Where(x => x.Fecha_cita.Date == date).ToListAsync();
+            return Ok(citas.Select(Cita => mapper.Map<CitaDTO>(Cita)));
+        }
 
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsMedico")]
@@ -87,9 +106,20 @@ namespace WebApiCitasMedicas.Controllers
             var cita = mapper.Map<Cita>(citaDto);
             cita.MedicoID = medico.Id;
 
+            Console.WriteLine(cita.Fecha_cita.Date);
+            Console.WriteLine(cita.Fecha_cita.Date);
+            Console.WriteLine(cita.Fecha_cita.Date);
+            Console.WriteLine(cita.Fecha_cita.Date);
+
+            Console.WriteLine(cita.Fecha_cita.Day);
+            Console.WriteLine(cita.Fecha_cita.Day);
+            Console.WriteLine(cita.Fecha_cita.Day);
+            Console.WriteLine(cita.Fecha_cita.Day);
+            
             var existeMedico = await dbContext.Medicos.AnyAsync( x => x.Id == cita.MedicoID);
             var existePaciente = await dbContext.Pacientes.AnyAsync( x => x.Id == cita.PacienteID);
             var mismoMedico = await dbContext.Pacientes.AnyAsync( x => x.MedicoID == cita.MedicoID && x.Id == cita.PacienteID );
+            //var citaDispoible = await dbContext.Citas.AddAsync(x => x. );
 
             if (!existePaciente)
             {

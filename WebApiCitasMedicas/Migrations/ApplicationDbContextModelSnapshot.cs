@@ -247,7 +247,7 @@ namespace WebApiCitasMedicas.Migrations
 
                     b.HasIndex("PacienteID");
 
-                    b.ToTable("Citas");
+                    b.ToTable("Citas", (string)null);
                 });
 
             modelBuilder.Entity("WebApiCitasMedicas.Entidades.Medico", b =>
@@ -273,7 +273,7 @@ namespace WebApiCitasMedicas.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Medicos");
+                    b.ToTable("Medicos", (string)null);
                 });
 
             modelBuilder.Entity("WebApiCitasMedicas.Entidades.Paciente", b =>
@@ -313,7 +313,7 @@ namespace WebApiCitasMedicas.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Pacientes");
+                    b.ToTable("Pacientes", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

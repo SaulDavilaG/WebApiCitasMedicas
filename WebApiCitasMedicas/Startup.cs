@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.Filtros;
-using Microsoft.IdentityModel.JsonWebTokens;
 using WebApiCitasMedicas.Middleware;
 using System.Text.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
-using Microsoft.OpenApi.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace WebApiCitasMedicas
