@@ -134,8 +134,7 @@ namespace WebApiCitasMedicas.Controllers
 
             var existeMedico = await dbContext.Medicos.AnyAsync(x => x.Id == pacienteDtoGet.MedicoID);
             var mismoMedico = await dbContext.Pacientes.AnyAsync(x => x.MedicoID == pacienteDtoGet.MedicoID && x.UsuarioId == usuarioId);
-
-            var pacienteayuda = dbContext.Pacientes.AnyAsync(x => x.UsuarioId == usuarioId);
+            var pacienteayuda = await dbContext.Pacientes.AnyAsync(x => x.UsuarioId == usuarioId);
 
             if (!existeMedico)
             {

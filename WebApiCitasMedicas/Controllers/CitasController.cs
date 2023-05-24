@@ -68,7 +68,7 @@ namespace WebApiCitasMedicas.Controllers
             var paciente = await dbContext.Pacientes.FirstOrDefaultAsync(x => x.UsuarioId == usuarioId);
             var cita = await dbContext.Citas.FirstOrDefaultAsync(x => x.Id == id && x.PacienteID == paciente.Id);
             logger.LogInformation("Busqueda de cita por id exitosa");
-            return mapper.Map<CitaDTO>(cita); 
+            return mapper.Map<CitaDTO>(cita);
         }
 
         [HttpGet("Nombre")]
@@ -107,13 +107,9 @@ namespace WebApiCitasMedicas.Controllers
             cita.MedicoID = medico.Id;
 
             Console.WriteLine(cita.Fecha_cita.Date);
-            Console.WriteLine(cita.Fecha_cita.Date);
-            Console.WriteLine(cita.Fecha_cita.Date);
-            Console.WriteLine(cita.Fecha_cita.Date);
 
-            Console.WriteLine(cita.Fecha_cita.Day);
-            Console.WriteLine(cita.Fecha_cita.Day);
-            Console.WriteLine(cita.Fecha_cita.Day);
+            Console.WriteLine(cita.Fecha_cita.Hour);
+
             Console.WriteLine(cita.Fecha_cita.Day);
             
             var existeMedico = await dbContext.Medicos.AnyAsync( x => x.Id == cita.MedicoID);
