@@ -13,6 +13,7 @@ namespace WebApiCitasMedicas.Controllers
     [ApiController]
     [ResponseCache(Duration = 2)]
     [Route("api/medicos")]
+    [ServiceFilter(typeof(AccionFiltro))]
     public class MedicosController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -125,6 +126,7 @@ namespace WebApiCitasMedicas.Controllers
             var email = emailClaim.Value;
             var usuario = await userManager.FindByEmailAsync(email);
             var usuarioId = usuario.Id;
+
             var medico = mapper.Map<Medico>(medicoDtoGet);
             medico.UsuarioId = usuarioId;
 

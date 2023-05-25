@@ -7,14 +7,13 @@ using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.Filtros;
 using WebApiCitasMedicas.Entidades;
 using WebApiCitasMedicas.DTOs;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
 
 namespace WebApiCitasMedicas.Controllers
 {
     [ApiController]
     [ResponseCache(Duration = 2)]
     [Route("api/citas")]
+    [ServiceFilter(typeof(AccionFiltro))]
     public class CitasController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -132,7 +131,7 @@ namespace WebApiCitasMedicas.Controllers
             logger.LogInformation("Registro de cita exitoso");
 
             var citas = await dbContext.Citas.ToListAsync();
-            return Ok(citas.Select(cita => mapper.Map<CitaDTO>(cita)));
+            return Ok(citas.Select(cita => mapper.Map<CitaDTOGet>(cita)));
         }
 
         [HttpPut("{id:int}")]

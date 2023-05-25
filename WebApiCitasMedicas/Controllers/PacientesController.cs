@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiCitasMedicas.Entidades;
 using WebApiCitasMedicas.DTOs;
-using Microsoft.Extensions.Logging;
 using WebApiCitasMedicas.Filtros;
 
 namespace WebApiCitasMedicas.Controllers
@@ -14,6 +13,7 @@ namespace WebApiCitasMedicas.Controllers
     [ApiController]
     [ResponseCache(Duration = 2)]
     [Route("api/pacientes")]
+    [ServiceFilter(typeof(AccionFiltro))]
     public class PacientesController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
@@ -96,6 +96,7 @@ namespace WebApiCitasMedicas.Controllers
                 return BadRequest("No existe el medico");
             }
 
+
             var medComparar = await dbContext.Pacientes.Where(x => x.MedicoID == pacienteDto.MedicoID).ToListAsync();
 
             var cont = 0;
@@ -114,7 +115,7 @@ namespace WebApiCitasMedicas.Controllers
             var paciente =mapper.Map<Paciente>(pacienteDto);
             paciente.UsuarioId = usuarioId;
 
-            //dbContext.Add(paciente);
+            dbContext.Add(paciente);
 
             logger.LogInformation("Registro de paciente exitoso");
             await dbContext.SaveChangesAsync();
@@ -132,6 +133,9 @@ namespace WebApiCitasMedicas.Controllers
             var usuario = await userManager.FindByEmailAsync(email);
             var usuarioId = usuario.Id;
 
+            var paciente = mapper.Map<Paciente>(pacienteDtoGet);
+            paciente.UsuarioId = usuarioId;
+
             var existeMedico = await dbContext.Medicos.AnyAsync(x => x.Id == pacienteDtoGet.MedicoID);
             var mismoMedico = await dbContext.Pacientes.AnyAsync(x => x.MedicoID == pacienteDtoGet.MedicoID && x.UsuarioId == usuarioId);
             var pacienteayuda = await dbContext.Pacientes.AnyAsync(x => x.UsuarioId == usuarioId);
@@ -145,8 +149,6 @@ namespace WebApiCitasMedicas.Controllers
                 return BadRequest("El paciente seleccionado no tiene relacion con el medico seleccionado");
             }
 
-            var paciente = mapper.Map<Paciente>(pacienteDtoGet);
-            paciente.UsuarioId = usuarioId;
             dbContext.Update(paciente);
 
             logger.LogInformation("Actualización de registro de paciente exitoso");

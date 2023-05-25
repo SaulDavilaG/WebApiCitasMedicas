@@ -7,11 +7,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using WebApiCitasMedicas.DTOs;
+using WebApiCitasMedicas.Filtros;
 
 namespace WebApiCitasMedicas.Controllers
 {
     [ApiController]
     [Route("Cuentas")]
+    [ServiceFilter(typeof(AccionFiltro))]
     public class CuentasController : ControllerBase
     {
         private readonly UserManager<IdentityUser> userManager;
@@ -68,7 +70,6 @@ namespace WebApiCitasMedicas.Controllers
                 Email = email
             };
             return await ConstruirToken(credenciales);
-
         }
 
         private async Task<RespuestaAutenticacion> ConstruirToken(CredencialesUsuario credencialesUsuario)
